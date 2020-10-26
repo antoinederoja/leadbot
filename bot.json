@@ -1,0 +1,16 @@
+{
+  "id": "3143f054-ac9a-4cc9-9f4b-84b57f37b1f0",
+  "name": "LeadgenBot",
+  "description": null,
+  "default_flow": "Default",
+  "flows": [
+    {
+      "name": "Default",
+      "description": "Default custom flow",
+      "commands": []
+    }
+  ],
+  "files": [],
+  "functions": [],
+  "apps": []
+}

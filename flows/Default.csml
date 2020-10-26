@@ -1,0 +1,67 @@
+start:
+  if (done) goto done
+  say "I just need to get a few informations so our sales team can get back to you."
+  goto name
+
+name:
+  say "What's your full name?"
+  hold
+  remember name = event
+  goto email
+
+email:
+  say "What's your email address?"
+  hold
+  if (!event.contains("@")) {
+    say "Please enter a valid email address"
+    goto email
+  }
+  remember email = event
+  goto phonenumber
+
+phonenumber:
+  say "What phone number should we contact you on ?"
+  hold
+  remember phonenumber = event
+  goto optin
+
+optin:
+  say Question("Are you ok with us contacting you ?",
+  button_type="quick_reply",
+  buttons=[
+    Button("Yes please 🤩", accepts=["yes", "y", "yep", "ok", "k", "sure", "yah"]) as btnYes,
+    Button("Nah thanks", accepts=["no", "nope", "nah", "na", "ne", "n", "noo"]) as btnNo,
+  ])
+  hold
+  if (event match btnYes) {
+    remember optin = event
+    goto save
+  } else if (event match btnNo) {
+    say "Awwww that's unfortunate, we won't be able to contact you..."
+    say "Come back to see me if you change your mind, bye!"
+    goto end
+  } else {
+    say "I did not understand that, I understand better when you click on buttons."
+    goto optin
+  }
+
+save:
+/* Webhook info to be added soon 
+
+  do Fn("zapier",
+    hook="h3hh90jdsj19/00000000",
+    payload={
+      "name": name,
+      "email": email,
+      "phonenumber": phonenumber,
+      "optin": optin,
+    }
+  )
+*/
+  say "Ok **{{name}}**, I'm going to get the sales team to call you soon."
+  remember done = 1
+  goto end
+
+done:
+  say "I already dot everything I need, a member of our sales team will reach out to you soon."
+  say "Thanks!"
